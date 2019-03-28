@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         checkForPermission();
+        init_folder();
         images = getImagesPath();
 
         imagesAdapter = new ImagesAdapter(this, images, R.layout.image_layout, getSupportFragmentManager());
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         images.clear();
+        init_folder();
         images.addAll(getImagesPath());
         imagesAdapter.notifyDataSetChanged();
     }
@@ -182,6 +184,17 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
         String currentTimeStamp = dateFormat.format(new Date());
         return currentTimeStamp;
+    }
+
+    private void init_folder() {
+
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+
     }
 
     private void storeCameraPhotoInSDCard(Bitmap bitmap, String currentDate) {
